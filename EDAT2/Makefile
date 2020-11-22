@@ -2,11 +2,11 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic -ansi
 LDLIBS = -lodbc
 
-EXE = menu
+EXE = main
 
 all : $(EXE)
 
 clean :
 	rm -f *.o core $(EXE)
 
-$(EXE) : % : %.o odbc.o
+$(EXE) : % : %.o odbc.o customers.o orders.o products.o menu.o
