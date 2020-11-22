@@ -67,7 +67,7 @@ void Stock(SQLHDBC dbc)
         (void)fflush(stdout);
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }
@@ -148,7 +148,7 @@ void FindProducts(SQLHDBC dbc)
         (void)fflush(stdout);
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }

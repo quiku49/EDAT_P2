@@ -86,7 +86,7 @@ void Range(SQLHDBC dbc)
     }
 
     printf("Enter dates (YYYY-MM-DD - YYYY-MM-DD) > ");
-    if (scanf("%s %s %s", date1, aux, date2) == NULL)
+    if (scanf("%s %s %s", date1, aux, date2) == EOF)
     {
         return;
     }
@@ -143,7 +143,7 @@ void Range(SQLHDBC dbc)
 
     (void)fflush(stdout);
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }
@@ -187,12 +187,12 @@ void Detail(SQLHDBC dbc)
 
     printf("Enter ordernumber > ");
 
-    if (scanf("%d", &ordernumber) == NULL)
+    if (scanf("%d", &ordernumber) == EOF)
     {
         return;
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }

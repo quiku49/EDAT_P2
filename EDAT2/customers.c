@@ -30,12 +30,12 @@ void FindCustomers(SQLHDBC dbc)
 
     printf("Enter customer name > ");
 
-    if (scanf("%s", customername) == NULL)
+    if (scanf("%s", customername) == EOF)
     {
         return;
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }
@@ -123,12 +123,12 @@ void ListProducts(SQLHDBC dbc)
 
     printf("Enter customer number > ");
 
-    if (scanf("%d", &customernumber) == NULL)
+    if (scanf("%d", &customernumber) == EOF)
     {
         return;
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }
@@ -203,12 +203,12 @@ void Balance(SQLHDBC dbc)
 
     printf("Enter customer number > ");
 
-    if (scanf("%d", &customernumber) == NULL)
+    if (scanf("%d", &customernumber) == EOF)
     {
         return;
     }
 
-    if (getchar() == NULL)
+    if (getchar() == -1)
     {
         return;
     }
