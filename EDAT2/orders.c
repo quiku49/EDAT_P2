@@ -214,6 +214,13 @@ void Detail(SQLHDBC dbc)
     while (SQL_SUCCEEDED(SQLFetch(stmt)))
         ;
 
+    cont = SQLCloseCursor(stmt);
+
+    if (!SQL_SUCCEEDED(cont))
+    {
+        return;
+    }
+
     cont = SQLFreeHandle(SQL_HANDLE_STMT, stmt);
 
     if (!SQL_SUCCEEDED(cont))
@@ -221,12 +228,7 @@ void Detail(SQLHDBC dbc)
         return;
     }
 
-    cont = SQLCloseCursor(stmt);
-
-    if (!SQL_SUCCEEDED(cont))
-    {
-        return;
-    }
+    
 
     (void)fflush(stdout);
 
@@ -265,6 +267,14 @@ void Detail(SQLHDBC dbc)
 
     printf("Total sum = %.6f\n", total);
 
+
+     cont = SQLCloseCursor(stmt);
+
+    if (!SQL_SUCCEEDED(cont))
+    {
+        return;
+    }
+    
     cont = SQLFreeHandle(SQL_HANDLE_STMT, stmt);
 
     if (!SQL_SUCCEEDED(cont))
@@ -272,12 +282,6 @@ void Detail(SQLHDBC dbc)
         return;
     }
 
-    cont = SQLCloseCursor(stmt);
-
-    if (!SQL_SUCCEEDED(cont))
-    {
-        return;
-    }
 
     (void)fflush(stdout);
 

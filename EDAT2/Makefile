@@ -2,10 +2,10 @@
 # Por lo general no se requiere modificar el fichero
 
 CC = gcc
-CFLAGS = -Wall -Wextra -pedantic -ansi
+CFLAGS = -Wall -Wextra -pedantic -ansi -g
 LDLIBS = -lodbc
 
-EXE = main
+EXE = menu
 
 export PGDATABASE:=classicmodels
 export PGUSER :=alumnodb
@@ -44,4 +44,4 @@ shell:
 clean :
 	rm -f *.o core $(EXE)
 
-$(EXE) : % : %.o odbc.o customers.o orders.o products.o menu.o
+$(EXE) : % : %.o odbc.o customers.o orders.o products.o

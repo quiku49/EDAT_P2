@@ -1,4 +1,82 @@
-#include "menu.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sql.h>
+#include <sqlext.h>
+#include "odbc.h"
+#include "products.h"
+#include "orders.h"
+#include "customers.h"
+
+#define LEN 255
+
+int ShowMainMenu();
+
+void ShowProductsMenu(SQLHDBC dbc);
+
+void ShowOrdersMenu(SQLHDBC dbc);
+
+void ShowCustomersMenu(SQLHDBC dbc);
+
+int ShowProductsSubMenu();
+
+int ShowOrdersSubMenu();
+
+int ShowCustomersSubMenu();
+
+
+int main(void)
+{
+
+    SQLHENV env = 0;
+    SQLHDBC dbc = 0;
+    SQLRETURN ret; /* ODBC API return status */
+    int nChoice = 0;
+
+    ret = (SQLRETURN)odbc_connect(&env, &dbc);
+    if (!SQL_SUCCEEDED(ret))
+    {
+        return EXIT_FAILURE;
+    }
+
+    do
+    {
+        nChoice = ShowMainMenu();
+        switch (nChoice)
+        {
+        case 1:
+        {
+            ShowProductsMenu(dbc);
+        }
+        break;
+
+        case 2:
+        {
+            ShowOrdersMenu(dbc);
+        }
+        break;
+
+        case 3:
+        {
+            ShowCustomersMenu(dbc);
+        }
+        break;
+        case 4:
+        {
+            printf("Bye Bye\n\n");
+        }
+        break;
+        }
+    } while (nChoice != 4);
+
+    ret = (SQLRETURN)odbc_disconnect(env, dbc);
+    if (!SQL_SUCCEEDED(ret))
+    {
+        return EXIT_FAILURE;
+    }
+
+    return 0;
+}
 
 /**
  *
