@@ -1,0 +1,52 @@
+CC = gcc -g
+CFLAGS = -Wall -Wextra -pedantic -ansi
+# LDLIBS = -lodbc
+
+# recompile if this header changes
+HEADERS = utils.h
+
+EXE = tester
+OBJ = $(EXE).o utils.o checkUtils.o checkCreateTable.o checkReplaceExtensionByIdx.o \
+checkCreateIndex.o checkPrint.o checkFindKey.o checkAddIndexEntry.o
+#all : $(EXE)
+
+tester: tester.o
+	gcc -o tester checkAddIndexEntry.o checkCreateIndex.o checkCreateTable.o checkFindKey.o checkPrint.o checkReplaceExtensionByIdx.o checkUtils.o tester.o utilstemplate.o
+
+tester.o: tester.c utilstemplate.o checkUtils.o checkReplaceExtensionByIdx.o checkPrint.o checkFindKey.o checkCreateTable.o checkCreateIndex.o checkAddIndexEntry.o
+	gcc -c tester.c
+
+checkAddIndexEntry.o: checkAddIndexEntry.c tester.h
+	gcc -c checkAddIndexEntry.c
+
+checkCreateIndex.o: checkCreateIndex.c tester.h
+	gcc -c checkCreateIndex.c
+
+checkCreateTable.o: checkCreateTable.c tester.h
+	gcc -c checkCreateTable.c
+
+checkFindKey.o: checkFindKey.c tester.h
+	gcc -c checkFindKey.c
+
+checkPrint.o: checkPrint.c tester.h
+	gcc -c checkPrint.c
+
+checkReplaceExtensionByIdx.o: checkReplaceExtensionByIdx.c tester.h
+	gcc -c checkReplaceExtensionByIdx.c
+
+checkUtils.o: checkUtils.c tester.h
+	gcc -c checkUtils.c
+
+utilstemplate.o: utilstemplate.c tester.h
+	gccc -c utilstemplate.c
+
+
+%.o: %.c $(HEADERS)
+	@echo Compiling $<...
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$EXE: $(DEPS) $(OBJ)
+	$(CC) -o $(EXE) $(OBJ) $(LDLIBS)
+
+clean :
+	rm -f *.o core $(EXE)
