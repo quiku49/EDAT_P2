@@ -40,5 +40,5 @@ void checkPrint(const char * indexName)
         }
     }
     fclose(fp);
-    printf("* checkcreateTablecreateIndex: OK\n");
+    printf("* checkPrint: OK\n");
 }

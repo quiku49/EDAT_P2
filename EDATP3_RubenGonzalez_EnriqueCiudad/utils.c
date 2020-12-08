@@ -1,5 +1,21 @@
 #include "utils.h"
 
+void replaceExtensionByIdx(const char * fileName, char * indexName){
+
+	int i;
+
+
+	for(i = 0; fileName[i]!='.'; i++){
+	    indexName[i]=fileName[i];
+	}
+	
+	indexName[i]= '\0';
+
+	strcat(indexName, ".idx");
+
+    return;
+}
+
 bool createTable(const char * tableName) {
 
     FILE *f = NULL;
@@ -68,6 +84,67 @@ bool createIndex(const char *indexName) {
     return true;
 }
 
+void printnode( size_t _level,size_t level,   FILE * indexFileHandler, int node_id, char side){
+    
+	int i,d, id_izq, id_derch,dad, offset;
+    char primary[PK_SIZE];
+	
+	if(!indexFileHandler || level>_level){
+        return;
+    }
+
+	offset=INDEX_HEADER_SIZE+(node_id)*(4*sizeof(int)+sizeof(primary));
+	
+	fseek(indexFileHandler, offset,SEEK_SET );
+
+	fread(primary, sizeof(primary), 1,indexFileHandler);
+
+	fread(&id_izq, sizeof(int), 1, indexFileHandler);
+
+	fread(&id_derch, sizeof(int), 1, indexFileHandler);
+
+	fread(&dad, sizeof(int), 1, indexFileHandler);
+
+	fread(&d, sizeof(int), 1,indexFileHandler);
+	
+	
+	for(i=0; i < (int)level; i++){
+		printf("\t");
+	}
+
+  printf("%c %s (%d) : %d\n", side, primary, node_id, d);
+
+	
+
+	if(id_izq!=-1) printnode( _level,level+1, indexFileHandler, id_izq, 'l');
+	if(id_derch!=-1) printnode( _level, level+1, indexFileHandler, id_derch, 'r');
+	
+
+	return;    
+}
+
+void printTree(size_t level, const char * indexName){
+    
+    FILE *f;
+	int raiz;
+
+    if(!indexName){
+        return;
+    }
+
+	f=fopen(indexName, "rb");
+
+	fread(&raiz, sizeof(int),1,f);
+
+	if (raiz!=-1){
+        printnode(level,0, f,raiz, ' ');
+    }
+
+	fclose(f);
+
+    return;
+}
+
 bool findKey(const char * book_id, const char * indexName, int * nodeIDOrDataOffset){
 
 	FILE *f;
@@ -118,82 +195,7 @@ bool findKey(const char * book_id, const char * indexName, int * nodeIDOrDataOff
 	
  }
 
-void replaceExtensionByIdx(const char * fileName, char * indexName){
-
-	int i;
-
-
-	for(i = 0; fileName[i]!='.'; i++){
-	    indexName[i]=fileName[i];
-	}
-	
-	indexName[i]= '\0';
-
-	strcat(indexName, ".idx");
-
-    return;
-}
-
-void printTree(size_t level, const char * indexName){
-    
-    FILE *f;
-	int raiz;
-
-    if(!indexName || level < 0){
-        return;
-    }
-
-	f=fopen(indexName, "rb");
-
-	fread(&raiz, sizeof(int),1,f);
-
-	if (raiz!=-1){
-        printnode(level,0, f,raiz, ' ');
-    }
-
-	fclose(f);
-
-    return;
-}
-
-void printnode( size_t _level,size_t level,   FILE * indexFileHandler, int node_id, char side){
-    
-	int i,d, id_izq, id_derch,dad, offset;
-    char primary[PK_SIZE];
-	
-	if(!indexFileHandler)return;
-	if(level>_level)return;
-
-	offset=INDEX_HEADER_SIZE+(node_id)*(4*sizeof(int)+sizeof(pk));
-	
-	fseek(indexFileHandler, offset,SEEK_SET );
-
-	fread(primary, sizeof(primary), 1,indexFileHandler);
-
-	fread(&id_izq, sizeof(int), 1, indexFileHandler);
-
-	fread(&id_derch, sizeof(int), 1, indexFileHandler);
-
-	fread(&dad, sizeof(int), 1, indexFileHandler);
-    
-	fread(&d, sizeof(int), 1,indexFileHandler);
-	
-	
-	for(i=0; i<level; i++){
-		printf("\t");
-	}
-
-  printf("%c %s (%d) : %d\n", side, primary, node_id, d);
-
-	
-
-	if(id_izq!=-1) printnode( _level,level+1, indexFileHandler, id_izq, 'l');
-	if(id_derch!=-1) printnode( _level, level+1, indexFileHandler, id_derch, 'r');
-	
-
-	return;    
-}
-
+/*SALEN WARNING PORQUE NO LAS HEMOS IMPLEMENTADO*/
 bool addTableEntry(Book * book, const char * tableName, const char * indexName){
      return true;
 }
